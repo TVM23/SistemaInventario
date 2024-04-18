@@ -7,11 +7,20 @@ $(document).ready(function () {
 function loadDataTable() {
     datatable = $("#tblDatos").DataTable({
         "ajax": {
-            "url": "/Admin/Marca/ObtenerTodos"
+            "url": "/Admin/Producto/ObtenerTodos"
         },
         "columns": [
-            { "data": "nombre", "width": "20%" },
-            { "data": "descripcion", "width": "40%" },
+            { "data": "numeroSerie"},
+            { "data": "descripcion" },
+            { "data": "categoria.nombre" },
+            { "data": "marca.nombre" },
+            {
+                "data": "precio", "classNmae": "text-end",
+                "render": function (data) {
+                    var d = data.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    return d;
+                }
+            },
             {
                 "data": "estado",
                 "render": function (data) {
@@ -21,17 +30,17 @@ function loadDataTable() {
                     else {
                         return "Inactivo";
                     }
-                }, "width": "20%"
+                }
             },
             {
                 "data": "id",
                 "render": function (data) {
                     return `
                         <div class="text-center">
-                            <a href="/Admin/Marca/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
+                            <a href="/Admin/Producto/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a onclick=Delete("/Admin/Marca/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer">
+                            <a onclick=Delete("/Admin/Producto/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer">
                                 <i class="bi bi-trash3-fill"></i>
                             </a>
                         </div>
@@ -68,7 +77,7 @@ function loadDataTable() {
 
 function Delete(url) {
     swal({
-        title: "¿Estas seguro que deseas eliminar la MARCA?",
+        title: "¿Estas seguro que deseas eliminar el PRODUCTO?",
         text: "¡Este registro no se podrá recuperar!",
         icon: "warning",
         buttons: true,
