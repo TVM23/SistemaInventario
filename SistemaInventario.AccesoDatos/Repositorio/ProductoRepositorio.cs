@@ -1,4 +1,5 @@
-﻿using SistemaInventario.AccesoDatos.Data;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SistemaInventario.AccesoDatos.Data;
 using SistemaInventario.AccesoDatos.Repositorio.IRepositorio;
 using SistemaInventario.Modelos;
 using System;
@@ -37,6 +38,35 @@ namespace SistemaInventario.AccesoDatos.Repositorio
                 productoDB.Estado = producto.Estado;
                 _db.SaveChanges();
             }
+        }
+
+        public IEnumerable<SelectListItem> ObtenerTodosDropDownList(string obj)
+        {
+            if(obj == "Categoria")
+            {
+                return _db.Categorias.Where(c => c.Estado == true).Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                });
+            }
+            if (obj == "Marca")
+            {
+                return _db.Marcas.Where(c => c.Estado == true).Select(c => new SelectListItem
+                {
+                    Text = c.Nombre,
+                    Value = c.Id.ToString()
+                });
+            }
+            if (obj == "Producto")
+            {
+                return _db.Productos.Where(c => c.Estado == true).Select(c => new SelectListItem
+                {
+                    Text = c.Descripcion,
+                    Value = c.Id.ToString()
+                });
+            }
+            return null;
         }
     }
 }
